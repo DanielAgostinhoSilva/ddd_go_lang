@@ -6,13 +6,13 @@ import (
 )
 
 type CustomerConstructorProps struct {
-	Id   string `json:"id"`
+	Id   string `json:"value"`
 	Cpf  string `json:"cpf"`
 	Name string `json:"name"`
 }
 
 type Customer struct {
-	id   string
+	id   *CustomerId
 	cpf  *value_objects.Cpf
 	name *value_objects.Name
 }
@@ -26,8 +26,12 @@ func NewCustomer(cp *CustomerConstructorProps) (*Customer, error) {
 	if err != nil {
 		return nil, err
 	}
+	newId, err := NewCustomerId(cp.Id)
+	if err != nil {
+		return nil, err
+	}
 
-	return &Customer{id: cp.Id, cpf: cpf, name: name}, nil
+	return &Customer{id: newId, cpf: cpf, name: name}, nil
 }
 
 func CreateCustomer(name, cpf string) (*Customer, error) {
@@ -35,7 +39,7 @@ func CreateCustomer(name, cpf string) (*Customer, error) {
 }
 
 func (c *Customer) ToJson() (string, error) {
-	props := &CustomerConstructorProps{c.id, c.cpf.Value(), c.name.Value()}
+	props := &CustomerConstructorProps{c.id.value.String(), c.cpf.Value(), c.name.Value()}
 	jsonData, err := json.Marshal(props)
 	if err != nil {
 		return "", err
@@ -43,11 +47,11 @@ func (c *Customer) ToJson() (string, error) {
 	return string(jsonData), nil
 }
 
-func (c *Customer) Equals(id string) bool {
+func (c *Customer) Equals(id *CustomerId) bool {
 	return c.id == id
 }
 
-func (c *Customer) Id() string {
+func (c *Customer) Id() *CustomerId {
 	return c.id
 }
 
