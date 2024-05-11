@@ -1,6 +1,9 @@
 package entities
 
-import "encoding/json"
+import (
+	"encoding/json"
+	value_objects "github.com/DanielAgostinhoSilva/ddd_go_lang/venda-de-ingressos/internal/common/domain/value-objects"
+)
 
 type CustomerConstructorProps struct {
 	Id   string `json:"id"`
@@ -10,20 +13,29 @@ type CustomerConstructorProps struct {
 
 type Customer struct {
 	id   string
-	cpf  string
-	name string
+	cpf  *value_objects.Cpf
+	name *value_objects.Name
 }
 
-func NewCustomer(cp *CustomerConstructorProps) *Customer {
-	return &Customer{id: cp.Id, cpf: cp.Cpf, name: cp.Name}
+func NewCustomer(cp *CustomerConstructorProps) (*Customer, error) {
+	cpf, err := value_objects.NewCpf(cp.Cpf)
+	if err != nil {
+		return nil, err
+	}
+	name, err := value_objects.NewName(cp.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Customer{id: cp.Id, cpf: cpf, name: name}, nil
 }
 
-func CreateCustomer(name, cpf string) *Customer {
+func CreateCustomer(name, cpf string) (*Customer, error) {
 	return NewCustomer(&CustomerConstructorProps{Name: name, Cpf: cpf})
 }
 
 func (c *Customer) ToJson() (string, error) {
-	props := &CustomerConstructorProps{c.id, c.cpf, c.name}
+	props := &CustomerConstructorProps{c.id, c.cpf.Value(), c.name.Value()}
 	jsonData, err := json.Marshal(props)
 	if err != nil {
 		return "", err
@@ -39,10 +51,10 @@ func (c *Customer) Id() string {
 	return c.id
 }
 
-func (c *Customer) Cfp() string {
+func (c *Customer) Cfp() *value_objects.Cpf {
 	return c.cpf
 }
 
-func (c *Customer) Name() string {
+func (c *Customer) Name() *value_objects.Name {
 	return c.name
 }

@@ -6,19 +6,19 @@ import (
 )
 
 var (
-	ErrNameIsRequired = errors.New("name is required")
+	ErrNameIsRequired = errors.New("value is required")
 )
 
 type Name struct {
-	name string
+	value string
 }
 
-func (n *Name) Name() string {
-	return n.name
+func (n *Name) Value() string {
+	return n.value
 }
 
 func NewName(name string) (*Name, error) {
-	newName := &Name{name: name}
+	newName := &Name{value: name}
 	if !newName.IsValid() {
 		return nil, ErrNameIsRequired
 	}
@@ -30,5 +30,5 @@ func (n *Name) Equals(name *Name) bool {
 }
 
 func (n *Name) IsValid() bool {
-	return len(n.name) >= 3
+	return len(n.value) >= 3
 }

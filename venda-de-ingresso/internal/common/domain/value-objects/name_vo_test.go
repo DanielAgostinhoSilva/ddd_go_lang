@@ -12,21 +12,21 @@ type NameVoTestSuite struct {
 func (suite *NameVoTestSuite) Test_deve_iniciar_um_nome_valido() {
 	nameA, err := NewName("Fulano da Silva")
 	suite.Nil(err)
-	suite.Equal("Fulano da Silva", nameA.Name())
+	suite.Equal("Fulano da Silva", nameA.Value())
 }
 
 func (suite *NameVoTestSuite) Test_deve_comparar_dois_nomes_se_sao_iguais() {
 	nameA, err := NewName("Fulano da Silva")
 	suite.Nil(err)
-	suite.Equal("Fulano da Silva", nameA.Name())
+	suite.Equal("Fulano da Silva", nameA.Value())
 
 	nameB, err := NewName("Fulano da Silva")
 	suite.Nil(err)
-	suite.Equal("Fulano da Silva", nameB.Name())
+	suite.Equal("Fulano da Silva", nameB.Value())
 
 	nameC, err := NewName("Fulana da Silva")
 	suite.Nil(err)
-	suite.Equal("Fulana da Silva", nameC.Name())
+	suite.Equal("Fulana da Silva", nameC.Value())
 
 	suite.True(nameA.Equals(nameB))
 	suite.False(nameA.Equals(nameC))
