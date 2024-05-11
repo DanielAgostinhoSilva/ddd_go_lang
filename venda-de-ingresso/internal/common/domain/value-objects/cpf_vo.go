@@ -2,6 +2,7 @@ package value_objects
 
 import (
 	"errors"
+	"reflect"
 	"regexp"
 	"strconv"
 )
@@ -12,6 +13,10 @@ var (
 
 type Cpf struct {
 	value string
+}
+
+func (c *Cpf) Equals(cpf *Cpf) bool {
+	return reflect.DeepEqual(c, cpf)
 }
 
 func (c *Cpf) Value() string {
