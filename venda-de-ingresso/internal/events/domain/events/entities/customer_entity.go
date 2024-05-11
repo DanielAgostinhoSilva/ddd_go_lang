@@ -10,12 +10,12 @@ type CustomerConstructorProps struct {
 
 type Customer struct {
 	id   string
-	cfp  string
+	cpf  string
 	name string
 }
 
 func NewCustomer(cp *CustomerConstructorProps) *Customer {
-	return &Customer{id: cp.Id, cfp: cp.Cpf, name: cp.Name}
+	return &Customer{id: cp.Id, cpf: cp.Cpf, name: cp.Name}
 }
 
 func CreateCustomer(name, cpf string) *Customer {
@@ -23,7 +23,7 @@ func CreateCustomer(name, cpf string) *Customer {
 }
 
 func (c *Customer) ToJson() (string, error) {
-	props := &CustomerConstructorProps{c.id, c.cfp, c.name}
+	props := &CustomerConstructorProps{c.id, c.cpf, c.name}
 	jsonData, err := json.Marshal(props)
 	if err != nil {
 		return "", err
@@ -31,12 +31,16 @@ func (c *Customer) ToJson() (string, error) {
 	return string(jsonData), nil
 }
 
+func (c *Customer) Equals(id string) bool {
+	return c.id == id
+}
+
 func (c *Customer) Id() string {
 	return c.id
 }
 
 func (c *Customer) Cfp() string {
-	return c.cfp
+	return c.cpf
 }
 
 func (c *Customer) Name() string {
