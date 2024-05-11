@@ -2,5 +2,6 @@ package domain
 
 type Entity interface {
 	ToJson() (string, error)
-	Equals(id string) bool
+	Equals(id interface{}) bool
+	Id() interface{}
 }

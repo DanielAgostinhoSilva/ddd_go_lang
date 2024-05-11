@@ -18,6 +18,15 @@ func (suite *CustomerEntityTestSuit) SetupTest() {
 	}
 }
 
+func (suite *CustomerEntityTestSuit) Test_criar_um_customer() {
+	customer, err := CreateCustomer("Fulano da silva", "48844027070")
+	suite.Nil(err)
+	suite.NotNil(customer)
+	suite.NotNil(customer.id)
+	suite.Equal("Fulano da silva", customer.Name().Value())
+	suite.Equal("48844027070", customer.Cfp().Value())
+}
+
 func (suite *CustomerEntityTestSuit) Test_deve_inicializar_um_customer() {
 	customer, err := NewCustomer(suite.customerProps)
 	suite.Nil(err)
